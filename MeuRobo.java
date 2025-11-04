@@ -36,11 +36,10 @@ public class MeuRobo extends Robot {
 		}
 	}
 
-	/**
-	 * Fire when we see a robot
-	 */
 	public void onScannedRobot(ScannedRobotEvent e) {
 		
+		//----INICIO DA LOGICA DE MIRA---
+
 		/**Calcula o ângulo para virar o canhao
 		 * usa a posição do robo (getHeading), a posição do inimigo (e.getBearing) 
 		 * e a posição atual do canhão (getGunHeading).
@@ -52,8 +51,45 @@ public class MeuRobo extends Robot {
 
 		// interrome o 'turnGunRight(360)' do método 'run'.
 		turnGunRight(anguloNormalizado);
-		fire(1);
 		
+		//----FIM DA LOGICA DE MIRA----
+
+
+// --- INICIO DA LÓGICA DE APROXIMAÇÃO---
+
+		//Checa a distância do inimigo.
+		if (e.getDistance() > 90) {
+			// MODO AGRESSIVO: Inimigo está LONGE ( > 90 pixels)
+			
+			// Vira o CORPO do robô para o inimigo.
+			// e.getBearing() é o ângulo para o inimigo, relativo à FRENTE do robô.
+			turnRight(e.getBearing());
+
+			// Avança um pouco para se aproximar.
+			// Este comando interrompe o vaivem
+			ahead(20);
+			
+			// Atira com força normal enquanto se aproxima.
+			fire(1);
+			/**
+			 * Se o inimigo estiver longe (mais de 90 pixels), 
+			 * o robô se aproxima enquanto atira em força normal, ao invés de andar de um lado pro outro
+			 */
+
+		} else {
+			//ROBÔ ESTÁ PERTO DO INIMIGO (menos de 90 pixels)
+			
+			/**Sem movimento de ahead ou turnright,
+			 * pra que o robo volte pro modo vaivem 
+			 * que está senxo executado no run().
+			 */
+
+			// atira com mais força, já que está perto do inimigo
+			fire(3);
+		}
+		
+		// --- FIM DA LOGICA DE APROXIMAÇAO ---
+	}
 
 		/** 
 		 * se um inimigo for scanneado, o robo atira e continua com o canhao virado para onde ele atirou
