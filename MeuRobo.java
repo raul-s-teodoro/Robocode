@@ -81,11 +81,42 @@ public class MeuRobo extends Robot {
 		turnLeft(90 - e.getBearing());
 	}
 
-	/**Dá meia volta quando bate na parede */
+	/**Vai até o centro da arena quando bate na parede*/
 	public void onHitWall(robocode.HitWallEvent e) {
-		back(30);
-		turnRight(180);
-		ahead(80);
+		
+		// 1. Pega as coordenadas do centro da arena
+		double meioX = getBattleFieldWidth() / 2;
+		double meioY = getBattleFieldHeight() / 2;
+		
+		// 2. Pega as coordenadas atuais do robô
+		double meuX = getX();
+		double meuY = getY();
+		
+		// 3. Calcula a distância (delta) em X e Y
+		double deltaX = meioX - meuX;
+		double deltaY = meioY - meuY;
+		
+		// 4. Calcula o ângulo absoluto para o centro (em radianos)
+		//    (Usamos atan2 para calcular o ângulo a partir das distâncias)
+		double anguloParaCentroRad = Math.atan2(deltaX, deltaY);
+		
+		// 5. Converte o ângulo para graus (que o Robocode usa)
+		double anguloParaCentroDeg = Math.toDegrees(anguloParaCentroRad);
+		
+		// 6. Calcula quanto o robô precisa virar
+		//    (Ângulo para onde queremos ir) - (Ângulo para onde estamos olhando)
+		double anguloDeGiro = anguloParaCentroDeg - getHeading();
+
+		// 7. Vira o CORPO do robô pelo caminho mais curto
+		turnRight(Utils.normalRelativeAngleDegrees(anguloDeGiro));
+		
+		// 8. Calcula a distância até o centro
+		double distanciaParaCentro = Math.hypot(deltaX, deltaY);
+		
+		// 9. Anda até o centro
+		//    Este comando INTERROMPE o 'run()' e faz o robô
+		//    ir direto para o meio antes de continuar o 'seesaw'.
+		ahead(distanciaParaCentro);
 	}
 }												
 
