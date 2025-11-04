@@ -20,7 +20,7 @@ import robocode.ScannedRobotEvent;
  *
  * @author Mathew A. Nelson (original)
  */
-public class MyFirstRobot extends Robot {
+public class MeuRobo extends Robot {
 
 	/**
 	 * MyFirstRobot's run method - Seesaw
@@ -51,9 +51,9 @@ public class MyFirstRobot extends Robot {
 	}
 
 	public void onHitWall(robocode.HitWallEvent e) {
-		back(50);
-		turnRight(90);
-		ahead(100);
+		back(30);
+		turnRight(180);
+		ahead(80);
 	}
 }												
 
