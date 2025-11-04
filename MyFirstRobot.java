@@ -49,5 +49,11 @@ public class MyFirstRobot extends Robot {
 	public void onHitByBullet(HitByBulletEvent e) {
 		turnLeft(90 - e.getBearing());
 	}
+
+	public void onHitWall(robocode.HitWallEvent e) {
+		back(50);
+		turnRight(90);
+		ahead(100);
+	}
 }												
 
