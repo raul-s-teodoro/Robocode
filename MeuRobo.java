@@ -26,15 +26,45 @@ public class MeuRobo extends Robot {
 	/**
 	 * MyFirstRobot's run method - Seesaw
 	 */
+
+		/**
+	 * TENTATIVA FALHA DE CORRIGIR O EMBURRECIMENTO DO ROBÔ
+	 */
+
+	// Guarda o "tempo" do jogo da última vez que vimos um inimigo.
+	long tempoUltimoScan = -10; // Começa negativo para procurar de imediato
+
+	/**
+	 * Método run do MeuRobo - Vaivém e Procura (Modo Padrão)
+	 */
 	public void run() {
 
 		while (true) {
-			ahead(100); // Move ahead 100
-			turnGunRight(360); // Spin gun around
-			back(100); // Move back 100
-			turnGunRight(360); // Spin gun around
+			ahead(100);
+			
+			// <--- MUDANÇA 2: Verificação de Tempo ---
+			// Só procura (gira 360) se não tivermos visto um inimigo
+			// nos últimos 10 "turnos" (ticks) do jogo.
+			if (getTime() - tempoUltimoScan > 10) {
+				turnGunRight(360); // Procura
+			} else {
+				// Se vimos um inimigo recentemente, não faça nada
+				// e deixe o 'onScannedRobot' controlar o canhão.
+				// O 'execute()' apenas "passa o turno".
+				execute();
+			}
+			
+			back(100);
+			
+			// <--- MUDANÇA 2 (de novo): Verificação de Tempo ---
+			if (getTime() - tempoUltimoScan > 10) {
+				turnGunRight(360); // Procura
+			} else {
+				execute();
+			}
 		}
 	}
+
 
 	public void onScannedRobot(ScannedRobotEvent e) {
 		
@@ -96,7 +126,6 @@ public class MeuRobo extends Robot {
 		 * até que o inimigo saia da área scanneada
 		 * quando isso acontece, a arma gira 360 graus de novo para procurar inimigos
 		 */
-	}
 
 	/**
 	 * We were hit!  Turn perpendicular to the bullet,
