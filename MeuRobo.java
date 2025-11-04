@@ -52,7 +52,16 @@ public class MeuRobo extends Robot {
 
 		// interrome o 'turnGunRight(360)' do método 'run'.
 		turnGunRight(anguloNormalizado);
-		fire(1);
+		
+		
+		// Verifica a distância antes de atirar
+		if (e.getDistance() < 220) {
+			// Se estiver perto (menos de 220 pixels), atira com força 3
+			fire(3);
+		} else {
+			// Se estiver longe, atira com força 1
+			fire(1);
+		}
 		
 
 		/** 
@@ -60,6 +69,8 @@ public class MeuRobo extends Robot {
 		 * até que o inimigo saia da área scanneada
 		 * quando isso acontece, a arma gira 360 graus de novo para procurar inimigos
 		 */
+
+
 	}
 
 	/**
