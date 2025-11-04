@@ -11,6 +11,7 @@ package sample;
 import robocode.HitByBulletEvent;
 import robocode.Robot;
 import robocode.ScannedRobotEvent;
+import robocode.util.Utils;
 
 
 /**
@@ -39,7 +40,26 @@ public class MeuRobo extends Robot {
 	 * Fire when we see a robot
 	 */
 	public void onScannedRobot(ScannedRobotEvent e) {
+		
+		/**Calcula o ângulo para virar o canhao
+		 * usa a posição do robo (getHeading), a posição do inimigo (e.getBearing) 
+		 * e a posição atual do canhão (getGunHeading).
+		 */
+		double giroDoCanhao = (getHeading() + e.getBearing()) - getGunHeading();
+
+		// faz o canhao virar para o caminho mais curto
+		double anguloNormalizado = Utils.normalRelativeAngleDegrees(giroDoCanhao);
+
+		// interrome o 'turnGunRight(360)' do método 'run'.
+		turnGunRight(anguloNormalizado);
 		fire(1);
+		
+
+		/** 
+		 * se um inimigo for scanneado, o robo atira e continua com o canhao virado para onde ele atirou
+		 * até que o inimigo saia da área scanneada
+		 * quando isso acontece, a arma gira 360 graus de novo para procurar inimigos
+		 */
 	}
 
 	/**
@@ -50,6 +70,7 @@ public class MeuRobo extends Robot {
 		turnLeft(90 - e.getBearing());
 	}
 
+	/**Dá meia volta quando bate na parede */
 	public void onHitWall(robocode.HitWallEvent e) {
 		back(30);
 		turnRight(180);
