@@ -21,7 +21,7 @@ import robocode.util.Utils;
  *
  * @author Mathew A. Nelson (original)
  */
-public class MeuRobo extends Robot {
+public class RoboRaul extends Robot {
 
 	/**
 	 * MyFirstRobot's run method - Seesaw
